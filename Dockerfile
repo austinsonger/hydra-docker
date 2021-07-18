@@ -4,8 +4,7 @@ LABEL maintainer="austin@songer.pro"
 
 ENV HYDRA_VERSION=9.2
 
-RUN set -x \
-    && apt-get update \
+RUN apt-get update \
     && apt-get -y install \
         #libmysqlclient-dev \
         default-libmysqlclient-dev \
@@ -52,33 +51,20 @@ RUN set -x \
         --uid 10001 \
         hydra
 
-ARG SECLIST_VER="2020.3"
+# ARG SECLIST_VER="2020.3"
 
-RUN set -x \
-    && if [ "${SECLIST_VER}" != "null" ]; then \
-        ( mkdir /tmp/seclists \
-            && curl -SsL "https://github.com/danielmiessler/SecLists/archive/${SECLIST_VER}.tar.gz" -o /tmp/seclists/src.tar.gz \
-            && tar xzf /tmp/seclists/src.tar.gz -C /tmp/seclists \
-            && mv "/tmp/seclists/SecLists-${SECLIST_VER}/Passwords" /opt/passwords \
-            && mv "/tmp/seclists/SecLists-${SECLIST_VER}/Usernames" /opt/usernames \
-            && chmod -R u+r /opt/passwords /opt/usernames \
-            && rm -Rf /tmp/seclists ) \
-    fi;
+# RUN set -x \
+#     && if [ "${SECLIST_VER}" != "null" ]; then \
+#         ( mkdir /tmp/seclists \
+#             && curl -SsL "https://github.com/danielmiessler/SecLists/archive/${SECLIST_VER}.tar.gz" -o /tmp/seclists/src.tar.gz \
+#             && tar xzf /tmp/seclists/src.tar.gz -C /tmp/seclists \
+#             && mv "/tmp/seclists/SecLists-${SECLIST_VER}/Passwords" /opt/passwords \
+#             && mv "/tmp/seclists/SecLists-${SECLIST_VER}/Usernames" /opt/usernames \
+#             && chmod -R u+r /opt/passwords /opt/usernames \
+#             && rm -Rf /tmp/seclists ) \
+#     fi;
 
 USER hydra:hydra
 
 ENTRYPOINT ["/usr/local/bin/hydra"]
-
-
-
-
-
-
-
-
-
-
-
-
-
 
